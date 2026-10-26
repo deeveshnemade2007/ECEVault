@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECEVault — Every Resource. One Place.</title>
+  <meta name="description" content="ECEVault is your one-stop hub for ECE study materials — assignments, manuals, question papers, and more. Organized by semester and subject." />
+  <link rel="icon" href="logo.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-inner">
+
+      <!-- Logo Image -->
+      <a class="brand" href="#" aria-label="ECEVault Home">
+        <img src="logo.png" alt="ECEVault Logo" class="brand-logo" id="brandLogo" />
+      </a>
+
+      <div class="header-right">
+
+        <!-- Dark / Light Toggle -->
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+          🌙
+        </button>
+
+        <!-- Admin Badge -->
+        <div class="admin-badge" id="adminBadge">
+          <span class="dot"></span>
+          ADMIN
+        </div>
+
+        <!-- Logout -->
+        <button class="admin-logout-btn" onclick="logoutAdmin()" id="logoutBtn">
+          🔓 Logout
+        </button>
+
+        <!-- Admin Login -->
+        <button class="admin-login-btn" onclick="openModal('pwModal')" id="loginBtn">
+          🔒 Admin
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-container">
+    <div class="year-tabs-wrapper">
+      <div class="tabs-nav" id="yearTabsNav"></div>
+    </div>
+    <div id="yearPanels"></div>
+  </main>
+
+  <!-- ===== UPLOAD FAB ===== -->
+  <button class="upload-fab" onclick="openUploadModal()" id="uploadFab">
+    ＋ Upload Files
+  </button>
+
+  <!-- ===== PASSWORD MODAL ===== -->
+  <div class="modal-overlay" id="pwModal">
+    <div class="modal pw-modal" role="dialog" aria-labelledby="pwTitle" aria-modal="true">
+      <div class="modal-body" style="padding:2rem;">
+        <div class="pw-icon-wrapper">🔐</div>
+        <h2 class="pw-heading" id="pwTitle">Admin Access</h2>
+        <p class="pw-subheading">Enter your password to unlock admin controls</p>
+
+        <div class="pw-input-wrapper" id="pwInputWrapper">
+          <input
+            type="password" id="pwInput" class="pw-input"
+            placeholder="Enter password"
+            onkeydown="if(event.key==='Enter') submitPassword()"
+            autocomplete="current-password"
+          />
+          <button class="pw-toggle" onclick="togglePwVisibility()" id="pwToggle" type="button" aria-label="Toggle password visibility">👁</button>
+        </div>
+        <div class="pw-error" id="pwError">❌ Incorrect password. Please try again.</div>
+
+        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:10px;">
+          <button class="btn btn-primary btn-full" onclick="submitPassword()">🔓 Unlock Admin Mode</button>
+          <button class="btn btn-ghost btn-full" onclick="closeModal('pwModal')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ADD SUBJECT MODAL ===== -->
+  <div class="modal-overlay" id="addSubjectModal">
+    <div class="modal" role="dialog" aria-labelledby="addSubjectTitle" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title" id="addSubjectTitle"><span>📚</span> Add New Subject</div>
+        <button class="modal-close" onclick="closeModal('addSubjectModal')" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="addSubjectInput">Subject Name</label>
+          <input type="text" id="addSubjectInput" class="form-input"
+            placeholder="e.g. Digital Signal Processing"
+            onkeydown="if(event.key==='Enter') submitAddSubject()"
+            autocomplete="off" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('addSubjectModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitAddSubject()">✓ Add Subject</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== UPLOAD MODAL ===== -->
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal" role="dialog" aria-labelledby="uploadModalTitle" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title" id="uploadModalTitle"><span>⬆</span> Upload Files</div>
+        <button class="modal-close" onclick="closeModal('uploadModal')" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="uploadSubjectSelect">Subject</label>
+          <select id="uploadSubjectSelect" class="form-select"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="uploadCategorySelect">File Type / Category</label>
+          <select id="uploadCategorySelect" class="form-select">
+            <option value="Assignment">📝 Assignment</option>
+            <option value="Manual">📗 Manual</option>
+            <option value="Self Learning">🧠 Self Learning</option>
+            <option value="Question Paper">📄 Question Paper</option>
+            <option value="Question Bank">🗂️ Question Bank</option>
+            <option value="Project">🚀 Project</option>
+            <option value="Other">📦 Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="uploadDesc">Description (Optional)</label>
+          <input type="text" id="uploadDesc" class="form-input" placeholder="e.g. Mid-sem 2024, Unit 3 Notes..." autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select Files</label>
+          <div class="file-dropzone" id="fileDropzone">
+            <input type="file" id="fileInput" multiple accept="*/*" onchange="handleFilesDrop(this)" />
+            <div class="dropzone-icon">📂</div>
+            <div class="dropzone-text"><strong>Click to browse</strong> or drag & drop files here</div>
+            <div class="dropzone-hint">PDF, Images, Word, Excel, PPT and all other formats supported</div>
+          </div>
+          <div class="selected-files" id="selectedFilesList"></div>
+        </div>
+        <div class="upload-progress" id="uploadProgress">
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar-fill" id="uploadProgressBar"></div>
+          </div>
+          <div class="progress-text" id="uploadProgressText">Preparing...</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal('uploadModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitUpload()" id="uploadSubmitBtn">⬆ Upload Files</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CONFIRM DIALOG ===== -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+      <div class="confirm-icon">⚠️</div>
+      <div class="confirm-title" id="confirmTitle">Are you sure?</div>
+      <div class="confirm-msg" id="confirmMsg">This action cannot be undone.</div>
+      <div class="confirm-actions">
+        <button class="btn btn-ghost" id="confirmNo">Cancel</button>
+        <button class="btn btn-danger" id="confirmYes">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
