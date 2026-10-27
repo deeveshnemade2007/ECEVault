@@ -1,0 +1,25 @@
+{
+  "name": "ecevault",
+  "version": "1.0.0",
+  "description": "**ECEVault** is a centralized academic resource platform designed for Electronics and Computer Engineering (ECE) students. It allows students to easily find, view, and download academic materials organized by academic year, semester, subject, and resource category.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deeveshnemade2007/ECE-Vault.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/deeveshnemade2007/ECE-Vault/issues"
+  },
+  "homepage": "https://github.com/deeveshnemade2007/ECE-Vault#readme",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
