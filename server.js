@@ -1,3 +1,4 @@
+require("dotenv").config();
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -5,7 +6,7 @@ const crypto = require("crypto");
 const { createClient } = require("@supabase/supabase-js");
 
 const PORT = Number(process.env.PORT) || 3000;
-const URL = process.env.SUPABASE_URL;
+const SUPABASE_URL = process.env.SUPABASE_URL;
 const KEY = process.env.SUPABASE_SECRET_KEY;
 const PASSWORD = process.env.ADMIN_PASSWORD;
 const BUCKET = "ecevault-files";
@@ -13,12 +14,22 @@ const COOKIE = "ecevault_session";
 const SESSION_MS = 8 * 60 * 60 * 1000;
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
-if (!URL || !KEY || !PASSWORD) {
-    console.error("Missing SUPABASE_URL, SUPABASE_SECRET_KEY, or ADMIN_PASSWORD.");
+// Validate the Supabase URL before creating the client.
+try {
+    const parsedUrl = new globalThis.URL(SUPABASE_URL);
+
+    if (parsedUrl.protocol !== "https:") {
+        throw new Error("Supabase URL must use HTTPS.");
+    }
+
+    console.log("Supabase URL is valid:", parsedUrl.hostname);
+} catch (err) {
+    console.error("Invalid SUPABASE_URL configuration:", err.message);
     process.exit(1);
 }
 
-const db = createClient(URL, KEY, {
+// Create the Supabase client.
+const db = createClient(SUPABASE_URL, KEY, {
     auth: {
         persistSession: false,
         autoRefreshToken: false,
@@ -457,8 +468,7 @@ async function handle(req, res) {
 
         json(res, {
             error: status === 413 ?
-                "File too large. Maximum upload size is 50 MB." :
-                "Server error. Check Render logs."
+                "File too large. Maximum upload size is 50 MB." : "Server error. Check Render logs."
         }, status);
     }
 }
