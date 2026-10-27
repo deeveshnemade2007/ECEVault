@@ -1,246 +1,314 @@
 // =========================================================
 // ECEVault — Frontend App
 // All file operations go to the Node.js server via fetch()
-// Files stored permanently on disk in /uploads
 // =========================================================
 
-const ADMIN_PASSWORD = 'Deevesh@0208';
-
-const YEARS = [
-  { id:'y2', label:'Second Year', semesters:[
-    { id:'sem3', label:'Semester 3' },
-    { id:'sem4', label:'Semester 4' },
-  ]},
-  { id:'y3', label:'Third Year', semesters:[
-    { id:'sem5', label:'Semester 5' },
-    { id:'sem6', label:'Semester 6' },
-  ]},
-  { id:'y4', label:'Fourth Year', semesters:[
-    { id:'sem7', label:'Semester 7' },
-    { id:'sem8', label:'Semester 8' },
-  ]},
+const YEARS = [{
+        id: 'y2',
+        label: 'Second Year',
+        semesters: [
+            { id: 'sem3', label: 'Semester 3' },
+            { id: 'sem4', label: 'Semester 4' },
+        ]
+    },
+    {
+        id: 'y3',
+        label: 'Third Year',
+        semesters: [
+            { id: 'sem5', label: 'Semester 5' },
+            { id: 'sem6', label: 'Semester 6' },
+        ]
+    },
+    {
+        id: 'y4',
+        label: 'Fourth Year',
+        semesters: [
+            { id: 'sem7', label: 'Semester 7' },
+            { id: 'sem8', label: 'Semester 8' },
+        ]
+    },
 ];
 
 const CATEGORIES = [
-  { id:'Assignment',    icon:'📝', label:'Assignments'    },
-  { id:'Manual',        icon:'📗', label:'Manuals'        },
-  { id:'Self Learning', icon:'🧠', label:'Self Learning'  },
-  { id:'Question Paper',icon:'📄', label:'Question Papers'},
-  { id:'Question Bank', icon:'🗂️', label:'Question Bank'  },
-  { id:'Project',       icon:'🚀', label:'Projects'       },
-  { id:'Other',         icon:'📦', label:'Other'          },
+    { id: 'Assignment', icon: '📝', label: 'Assignments' },
+    { id: 'Manual', icon: '📗', label: 'Manuals' },
+    { id: 'Self Learning', icon: '🧠', label: 'Self Learning' },
+    { id: 'Question Paper', icon: '📄', label: 'Question Papers' },
+    { id: 'Question Bank', icon: '🗂️', label: 'Question Bank' },
+    { id: 'Project', icon: '🚀', label: 'Projects' },
+    { id: 'Other', icon: '📦', label: 'Other' },
 ];
 
 // ── app state (loaded from server) ────────────────────
 let isAdmin = false;
 
 let state = {
-  subjects:      {},   // { semId: string[] }
-  files:         [],   // file metadata array
-  activeYear:    YEARS[0].id,
-  activeSem:     {},
-  activeSubject: {},
+    subjects: {}, // { semId: string[] }
+    files: [], // file metadata array
+    activeYear: YEARS[0].id,
+    activeSem: {},
+    activeSubject: {},
 };
 
 // ── SERVER API CALLS ───────────────────────────────────
 
 async function apiGet(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(`GET ${url} → ${r.status}`);
-  return r.json();
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`GET ${url} → ${r.status}`);
+    return r.json();
 }
 
 async function apiPost(url, body) {
-  const r = await fetch(url, {
-    method : 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body   : JSON.stringify(body),
-  });
-  if (!r.ok) throw new Error(`POST ${url} → ${r.status}`);
-  return r.json();
+    const r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    });
+    if (!r.ok) throw new Error(`POST ${url} → ${r.status}`);
+    return r.json();
 }
 
 async function apiDelete(url) {
-  const r = await fetch(url, { method: 'DELETE' });
-  if (!r.ok) throw new Error(`DELETE ${url} → ${r.status}`);
-  return r.json();
+    const r = await fetch(url, { method: 'DELETE' });
+    if (!r.ok) throw new Error(`DELETE ${url} → ${r.status}`);
+    return r.json();
 }
 
 /** Upload a single File object to the server */
 async function apiUploadFile(file, semId, subject, category, desc) {
-  const buf = await file.arrayBuffer();
-  const r   = await fetch('/api/upload', {
-    method : 'POST',
-    headers: {
-      'Content-Type'  : file.type || 'application/octet-stream',
-      'X-File-Name'   : encodeURIComponent(file.name),
-      'X-Subject'     : encodeURIComponent(subject),
-      'X-SemId'       : semId,
-      'X-Category'    : encodeURIComponent(category),
-      'X-Desc'        : encodeURIComponent(desc),
-      'X-Mime'        : file.type || 'application/octet-stream',
-      'X-Size'        : String(file.size),
-    },
-    body: buf,
-  });
-  if (!r.ok) throw new Error(`Upload failed: ${r.status}`);
-  return r.json();
+    const buf = await file.arrayBuffer();
+    const r = await fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+            'Content-Type': file.type || 'application/octet-stream',
+            'X-File-Name': encodeURIComponent(file.name),
+            'X-Subject': encodeURIComponent(subject),
+            'X-SemId': semId,
+            'X-Category': encodeURIComponent(category),
+            'X-Desc': encodeURIComponent(desc),
+            'X-Mime': file.type || 'application/octet-stream',
+            'X-Size': String(file.size),
+        },
+        body: buf,
+    });
+    if (!r.ok) throw new Error(`Upload failed: ${r.status}`);
+    return r.json();
 }
 
 /** Load all data (subjects + file metadata) from server */
 async function loadFromServer() {
-  const data      = await apiGet('/api/data');
-  state.subjects  = data.subjects || {};
-  state.files     = data.files    || [];
+    const data = await apiGet('/api/data');
+    state.subjects = data.subjects || {};
+    state.files = data.files || [];
 }
 
 // ── THEME ──────────────────────────────────────────────
 function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('ecevault_theme', theme);
-  const btn = document.getElementById('themeToggle');
-  if (theme === 'dark') { btn.textContent = '🌙'; btn.title = 'Switch to Light Mode'; }
-  else                  { btn.textContent = '☀️'; btn.title = 'Switch to Dark Mode';  }
-}
-function toggleTheme() {
-  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
-  applyTheme(cur === 'dark' ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('ecevault_theme', theme);
+    const btn = document.getElementById('themeToggle');
+    if (theme === 'dark') { btn.textContent = '🌙';
+        btn.title = 'Switch to Light Mode'; } else { btn.textContent = '☀️';
+        btn.title = 'Switch to Dark Mode'; }
 }
 
-// ── PASSWORD AUTH ──────────────────────────────────────
-function submitPassword() {
-  const input   = document.getElementById('pwInput');
-  const error   = document.getElementById('pwError');
-  const wrapper = document.getElementById('pwInputWrapper');
-  if (input.value === ADMIN_PASSWORD) {
-    isAdmin = true;
-    document.body.classList.add('admin-mode');
-    sessionStorage.setItem('ecevault_admin', '1');
-    closeModal('pwModal');
-    input.value = '';
-    error.classList.remove('show');
-    toast('Welcome back, Admin! 👋', 'success');
-    renderApp();
-  } else {
-    error.classList.add('show');
-    wrapper.classList.add('pw-shake');
-    setTimeout(() => wrapper.classList.remove('pw-shake'), 450);
-    input.focus(); input.select();
-  }
+function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    applyTheme(cur === 'dark' ? 'light' : 'dark');
 }
-function logoutAdmin() {
-  isAdmin = false;
-  document.body.classList.remove('admin-mode');
-  sessionStorage.removeItem('ecevault_admin');
-  toast('Logged out of admin mode.', 'info');
-  renderApp();
+
+// ── SECURE SERVER-SIDE ADMIN AUTH ──────────────────────
+
+async function submitPassword() {
+    const input = document.getElementById('pwInput');
+    const error = document.getElementById('pwError');
+    const wrapper = document.getElementById('pwInputWrapper');
+    const password = input.value;
+
+    try {
+        const response = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            error.classList.add('show');
+            wrapper.classList.add('pw-shake');
+
+            setTimeout(() => {
+                wrapper.classList.remove('pw-shake');
+            }, 450);
+
+            input.focus();
+            input.select();
+            return;
+        }
+
+        isAdmin = true;
+        document.body.classList.add('admin-mode');
+
+        closeModal('pwModal');
+        input.value = '';
+        error.classList.remove('show');
+
+        toast('Welcome back, Admin! 👋', 'success');
+        renderApp();
+
+    } catch (e) {
+        toast('Unable to contact the server. Please try again.', 'error');
+        console.error('Admin login failed:', e);
+    }
 }
+
+async function logoutAdmin() {
+    try {
+        const response = await fetch('/api/admin/logout', {
+            method: 'POST'
+        });
+
+        if (!response.ok) {
+            throw new Error(`Logout failed: ${response.status}`);
+        }
+
+        isAdmin = false;
+        document.body.classList.remove('admin-mode');
+
+        toast('Logged out of admin mode.', 'info');
+        renderApp();
+
+    } catch (e) {
+        toast('Logout failed. Please try again.', 'error');
+        console.error('Admin logout failed:', e);
+    }
+}
+
 function togglePwVisibility() {
-  const i = document.getElementById('pwInput');
-  const b = document.getElementById('pwToggle');
-  if (i.type === 'password') { i.type = 'text';     b.textContent = '🙈'; }
-  else                       { i.type = 'password'; b.textContent = '👁'; }
+    const input = document.getElementById('pwInput');
+    const button = document.getElementById('pwToggle');
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        button.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        button.textContent = '👁';
+    }
 }
 
 // ── HELPERS ────────────────────────────────────────────
-const getSubjects   = semId      => state.subjects[semId] || [];
-const getFiles      = (semId, s) => state.files.filter(f => f.semId === semId && f.subject === s);
-const getFilesInSem = semId      => state.files.filter(f => f.semId === semId);
+const getSubjects = semId => state.subjects[semId] || [];
+const getFiles = (semId, s) => state.files.filter(f => f.semId === semId && f.subject === s);
+const getFilesInSem = semId => state.files.filter(f => f.semId === semId);
 
 function formatSize(b) {
-  if (!b)          return '';
-  if (b < 1024)    return b + ' B';
-  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
-  return (b/1048576).toFixed(1) + ' MB';
+    if (!b) return '';
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+    return (b / 1048576).toFixed(1) + ' MB';
 }
+
 function formatDate(iso) {
-  return new Date(iso).toLocaleDateString('en-IN',{ day:'2-digit', month:'short', year:'numeric' });
+    return new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 }
+
 function getFileEmoji(str) {
-  if (!str) return '📄';
-  const t = str.toLowerCase();
-  if (t.includes('pdf'))                                               return '📕';
-  if (t.includes('word') || t.includes('.doc'))                       return '📘';
-  if (t.includes('excel') || t.includes('.xls') || t.includes('csv')) return '📗';
-  if (t.includes('ppt'))                                              return '📙';
-  if (t.match(/image|png|jpe?g|gif|svg|webp/))                        return '🖼️';
-  if (t.match(/zip|rar|7z/))                                          return '🗜️';
-  if (t.includes('txt'))                                              return '📃';
-  if (t.match(/video|mp4|mkv|avi/))                                   return '🎬';
-  if (t.match(/audio|mp3|wav/))                                       return '🎵';
-  return '📄';
+    if (!str) return '📄';
+    const t = str.toLowerCase();
+    if (t.includes('pdf')) return '📕';
+    if (t.includes('word') || t.includes('.doc')) return '📘';
+    if (t.includes('excel') || t.includes('.xls') || t.includes('csv')) return '📗';
+    if (t.includes('ppt')) return '📙';
+    if (t.match(/image|png|jpe?g|gif|svg|webp/)) return '🖼️';
+    if (t.match(/zip|rar|7z/)) return '🗜️';
+    if (t.includes('txt')) return '📃';
+    if (t.match(/video|mp4|mkv|avi/)) return '🎬';
+    if (t.match(/audio|mp3|wav/)) return '🎵';
+    return '📄';
 }
+
 function getCatClass(cat) {
-  const m = { 'Assignment':'assignment','Manual':'manual','Self Learning':'selflearning',
-    'Question Paper':'questionpaper','Question Bank':'questionbank','Project':'project','Other':'other' };
-  return m[cat] || 'other';
+    const m = {
+        'Assignment': 'assignment',
+        'Manual': 'manual',
+        'Self Learning': 'selflearning',
+        'Question Paper': 'questionpaper',
+        'Question Bank': 'questionbank',
+        'Project': 'project',
+        'Other': 'other'
+    };
+    return m[cat] || 'other';
 }
 
 // ── TOAST ──────────────────────────────────────────────
-function toast(msg, type='success') {
-  const c = document.getElementById('toastContainer');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  const icons = { success:'✅', error:'❌', info:'ℹ️', warning:'⚠️' };
-  t.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
-  c.appendChild(t);
-  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3500);
+function toast(msg, type = 'success') {
+    const c = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = `toast ${type}`;
+    const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+    t.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+    c.appendChild(t);
+    requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+    setTimeout(() => { t.classList.remove('show');
+        setTimeout(() => t.remove(), 400); }, 3500);
 }
 
 // ── CONFIRM ────────────────────────────────────────────
 function confirmDialog(title, msg) {
-  return new Promise(resolve => {
-    const overlay = document.getElementById('confirmOverlay');
-    document.getElementById('confirmTitle').textContent = title;
-    document.getElementById('confirmMsg').textContent   = msg;
-    overlay.classList.add('open');
-    const yes = document.getElementById('confirmYes');
-    const no  = document.getElementById('confirmNo');
-    const cleanup = val => {
-      overlay.classList.remove('open');
-      yes.removeEventListener('click', onYes);
-      no.removeEventListener('click', onNo);
-      resolve(val);
-    };
-    const onYes = () => cleanup(true);
-    const onNo  = () => cleanup(false);
-    yes.addEventListener('click', onYes);
-    no.addEventListener('click', onNo);
-  });
+    return new Promise(resolve => {
+        const overlay = document.getElementById('confirmOverlay');
+        document.getElementById('confirmTitle').textContent = title;
+        document.getElementById('confirmMsg').textContent = msg;
+        overlay.classList.add('open');
+        const yes = document.getElementById('confirmYes');
+        const no = document.getElementById('confirmNo');
+        const cleanup = val => {
+            overlay.classList.remove('open');
+            yes.removeEventListener('click', onYes);
+            no.removeEventListener('click', onNo);
+            resolve(val);
+        };
+        const onYes = () => cleanup(true);
+        const onNo = () => cleanup(false);
+        yes.addEventListener('click', onYes);
+        no.addEventListener('click', onNo);
+    });
 }
 
 // ── RENDER ────────────────────────────────────────────
 function renderApp() { renderYearTabs(); }
 
 function renderYearTabs() {
-  const nav    = document.getElementById('yearTabsNav');
-  const panels = document.getElementById('yearPanels');
-  nav.innerHTML = panels.innerHTML = '';
+    const nav = document.getElementById('yearTabsNav');
+    const panels = document.getElementById('yearPanels');
+    nav.innerHTML = panels.innerHTML = '';
 
-  YEARS.forEach(year => {
-    const btn = document.createElement('button');
-    btn.className   = `tab-btn ${year.id === state.activeYear ? 'active' : ''}`;
-    btn.textContent = year.label;
-    btn.id          = `yearbtn-${year.id}`;
-    btn.onclick     = () => { state.activeYear = year.id; renderYearTabs(); };
-    nav.appendChild(btn);
+    YEARS.forEach(year => {
+        const btn = document.createElement('button');
+        btn.className = `tab-btn ${year.id === state.activeYear ? 'active' : ''}`;
+        btn.textContent = year.label;
+        btn.id = `yearbtn-${year.id}`;
+        btn.onclick = () => { state.activeYear = year.id;
+            renderYearTabs(); };
+        nav.appendChild(btn);
 
-    const panel = document.createElement('div');
-    panel.className = `year-panel ${year.id === state.activeYear ? 'active' : ''}`;
-    panel.id        = `yearpanel-${year.id}`;
-    panel.innerHTML = renderSemesterTabs(year);
-    panels.appendChild(panel);
-  });
+        const panel = document.createElement('div');
+        panel.className = `year-panel ${year.id === state.activeYear ? 'active' : ''}`;
+        panel.id = `yearpanel-${year.id}`;
+        panel.innerHTML = renderSemesterTabs(year);
+        panels.appendChild(panel);
+    });
 }
 
 function renderSemesterTabs(year) {
-  if (!state.activeSem[year.id]) state.activeSem[year.id] = year.semesters[0].id;
-  const active = state.activeSem[year.id];
-  let html = `<div class="semester-tabs-wrapper"><div class="sem-tabs-nav">`;
-  year.semesters.forEach(sem => {
-    const cnt = getFilesInSem(sem.id).length;
-    html += `<button class="sem-tab-btn ${sem.id===active?'active':''}"
+    if (!state.activeSem[year.id]) state.activeSem[year.id] = year.semesters[0].id;
+    const active = state.activeSem[year.id];
+    let html = `<div class="semester-tabs-wrapper"><div class="sem-tabs-nav">`;
+    year.semesters.forEach(sem => {
+                const cnt = getFilesInSem(sem.id).length;
+                html += `<button class="sem-tab-btn ${sem.id===active?'active':''}"
       onclick="switchSem('${year.id}','${sem.id}')" id="sembtn-${sem.id}">
       ${sem.label}${cnt>0?` <span style="font-size:.7rem;color:var(--accent-primary);margin-left:4px;">${cnt}</span>`:''}
     </button>`;
@@ -647,12 +715,22 @@ async function init() {
     return;
   }
 
-  // Restore admin session
-  if (sessionStorage.getItem('ecevault_admin')==='1') {
-    isAdmin = true;
-    document.body.classList.add('admin-mode');
-  }
+// Restore admin session from the server
+try {
+  const session = await apiGet('/api/admin/session');
 
+  isAdmin = session.authenticated === true;
+
+  if (isAdmin) {
+    document.body.classList.add('admin-mode');
+  } else {
+    document.body.classList.remove('admin-mode');
+  }
+} catch (e) {
+  console.error('Could not verify admin session:', e);
+  isAdmin = false;
+  document.body.classList.remove('admin-mode');
+}
   renderApp();
   initDropzone();
 }

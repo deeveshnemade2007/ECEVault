@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/deeveshnemade2007/ECE-Vault#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "express": "^5.3.0"
   }
 }
