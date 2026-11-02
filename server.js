@@ -303,11 +303,12 @@ async function handle(req, res) {
             return json(res, { success: true, id });
         }
 
-        // Download a file from private storage.
-        const downloadMatch = route.match(/^\/api\/download\/([^/]+)$/);
+        // View or download a file from private Supabase Storage.
+        const fileActionMatch = route.match(/^\/api\/(view|download)\/([^/]+)$/);
 
-        if (downloadMatch && method === "GET") {
-            const id = decodeURIComponent(downloadMatch[1]);
+        if (fileActionMatch && method === "GET") {
+            const action = fileActionMatch[1];
+            const id = decodeURIComponent(fileActionMatch[2]);
 
             const { data: file, error } = await db.from("files")
                 .select("*")
@@ -327,14 +328,20 @@ async function handle(req, res) {
             if (downloadError) throw downloadError;
 
             const buffer = Buffer.from(await blob.arrayBuffer());
-            const safeName = String(file.name || "download")
+
+            const safeName = String(file.name || "file")
                 .replace(/[\r\n"]/g, "_");
+
+            const disposition = action === "view" ?
+                "inline" :
+                "attachment";
 
             res.writeHead(200, {
                 "Content-Type": file.mime_type || "application/octet-stream",
-                "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(safeName)}`,
+                "Content-Disposition": `${disposition}; filename*=UTF-8''${encodeURIComponent(safeName)}`,
                 "Content-Length": buffer.length,
-                "Cache-Control": "private, no-store"
+                "Cache-Control": "private, no-store",
+                "X-Content-Type-Options": "nosniff"
             });
 
             return res.end(buffer);

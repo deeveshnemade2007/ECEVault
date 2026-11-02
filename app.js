@@ -107,9 +107,13 @@ function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('ecevault_theme', theme);
     const btn = document.getElementById('themeToggle');
-    if (theme === 'dark') { btn.textContent = '🌙';
-        btn.title = 'Switch to Light Mode'; } else { btn.textContent = '☀️';
-        btn.title = 'Switch to Dark Mode'; }
+    if (theme === 'dark') {
+        btn.textContent = '🌙';
+        btn.title = 'Switch to Light Mode';
+    } else {
+        btn.textContent = '☀️';
+        btn.title = 'Switch to Dark Mode';
+    }
 }
 
 function toggleTheme() {
@@ -251,8 +255,10 @@ function toast(msg, type = 'success') {
     t.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
     c.appendChild(t);
     requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
-    setTimeout(() => { t.classList.remove('show');
-        setTimeout(() => t.remove(), 400); }, 3500);
+    setTimeout(() => {
+        t.classList.remove('show');
+        setTimeout(() => t.remove(), 400);
+    }, 3500);
 }
 
 // ── CONFIRM ────────────────────────────────────────────
@@ -290,8 +296,10 @@ function renderYearTabs() {
         btn.className = `tab-btn ${year.id === state.activeYear ? 'active' : ''}`;
         btn.textContent = year.label;
         btn.id = `yearbtn-${year.id}`;
-        btn.onclick = () => { state.activeYear = year.id;
-            renderYearTabs(); };
+        btn.onclick = () => {
+            state.activeYear = year.id;
+            renderYearTabs();
+        };
         nav.appendChild(btn);
 
         const panel = document.createElement('div');
@@ -429,8 +437,9 @@ function renderCategoryBlocks(semId, subject, files, q='') {
 }
 
 function renderFileCard(f, semId, subject) {
-  const cc    = getCatClass(f.category);
+  const cc = getCatClass(f.category);
   const emoji = getFileEmoji(f.mimeType || f.name);
+
   return `<div class="file-card" id="filecard-${f.id}">
     <div style="display:flex;align-items:center;gap:10px;">
       <div class="file-icon-wrapper">${emoji}</div>
@@ -438,19 +447,29 @@ function renderFileCard(f, semId, subject) {
         <div class="file-name" title="${escAttr(f.name)}">${escHtml(f.name)}</div>
         <div class="file-meta">
           <span class="type-badge badge-${cc}">${escHtml(f.category)}</span>
-          ${f.size?`<span class="file-size-badge">${formatSize(f.size)}</span>`:''}
+          ${f.size ? `<span class="file-size-badge">${formatSize(f.size)}</span>` : ''}
         </div>
       </div>
     </div>
-    ${f.desc?`<div style="font-size:.78rem;color:var(--text-muted);line-height:1.5;">${escHtml(f.desc)}</div>`:''}
-    <div style="font-size:.72rem;color:var(--text-muted);">📅 ${formatDate(f.date)}</div>
-    <div class="file-actions">
-      <button class="btn-download" onclick="downloadFile('${f.id}','${escAttr(f.name)}')">
-        ⬇ Download
-      </button>
-      <button class="btn-admin-action delete" title="Delete"
-        onclick="deleteFile('${f.id}','${semId}','${escAttr(subject)}')">🗑</button>
+
+    ${f.desc ? `<div style="font-size:.78rem;color:var(--text-muted);line-height:1.5;">${escHtml(f.desc)}</div>` : ''}
+
+    <div style="font-size:.72rem;color:var(--text-muted);">
+      📅 ${formatDate(f.date)}
     </div>
+
+   <div class="file-actions">
+  <button class="btn-download" onclick="viewFile('${f.id}')">
+    👁 View
+  </button>
+
+  <button class="btn-download" onclick="downloadFile('${f.id}','${escAttr(f.name)}')">
+    ⬇ Download
+  </button>
+
+  <button class="btn-admin-action delete" title="Delete"
+    onclick="deleteFile('${f.id}','${semId}','${escAttr(subject)}')">🗑</button>
+</div>
   </div>`;
 }
 
@@ -627,6 +646,11 @@ async function deleteFile(fileId, semId, subject) {
   } catch(e) {
     toast('Failed to delete: ' + e.message, 'error');
   }
+}
+
+// ── VIEW FILE ──────────────────────────────────────────
+function viewFile(fileId) {
+  window.open(`/api/view/${encodeURIComponent(fileId)}`, '_blank', 'noopener');
 }
 
 // ── DOWNLOAD FILE ─────────────────────────────────────
