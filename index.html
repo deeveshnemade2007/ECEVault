@@ -1,129 +1,324 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECEVault — Every Resource. One Place.</title>
-  <meta name="description" content="ECEVault is your one-stop hub for ECE study materials — assignments, manuals, question papers, and more. Organized by semester and subject." />
-  <link rel="icon" href="logo.png" type="image/png" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ECEVault — Every Resource. One Place.</title>
+    <meta name="description" content="ECEVault is your one-stop hub for ECE study materials — assignments, manuals, question papers, and more. Organized by semester and subject." />
+    <link rel="icon" href="logo.png" type="image/png" />
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About the Creator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7fcff;
+            color: #12324a;
+        }
+        
+        .team-section {
+            padding: 60px 20px;
+        }
+        
+        .team-section__content {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        
+        .team-section__eyebrow {
+            color: #1686b5;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        .team-section__title {
+            text-align: center;
+            font-size: 32px;
+            margin: 0 0 16px;
+            color: #12324a;
+        }
+        
+        .team-section__intro {
+            max-width: 700px;
+            margin: 0 auto 35px;
+            text-align: center;
+            color: #607b8e;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        /* Creator and Contact Layout */
+        
+        .creator-contact-grid {
+            max-width: 950px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: 24px;
+            align-items: stretch;
+        }
+        /* Creator Card */
+        
+        .creator-card {
+            max-width: none;
+            margin: 0;
+            padding: 32px 20px;
+            background: #ffffff;
+            border: 1px solid #dcecf5;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(18, 50, 74, 0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .creator-avatar {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1686b5, #42c6d9);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            box-shadow: 0 5px 15px rgba(22, 134, 181, 0.2);
+        }
+        
+        .creator-card h3 {
+            font-size: 22px;
+            margin: 0 0 8px;
+            color: #12324a;
+        }
+        
+        .creator-role {
+            color: #1686b5;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0;
+        }
+        /* Contact Section */
+        
+        .contact-section {
+            max-width: none;
+            margin: 0;
+            padding: 30px 24px;
+            background: #ffffff;
+            border: 1px solid #dcecf5;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(18, 50, 74, 0.06);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .contact-section__title {
+            text-align: center;
+            font-size: 23px;
+            color: #12324a;
+            margin: 0 0 10px;
+        }
+        
+        .contact-section__intro {
+            text-align: center;
+            color: #607b8e;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 25px;
+        }
+        
+        .contact-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        .contact-item {
+            text-decoration: none;
+            background: #f7fcff;
+            border: 1px solid #e1eff6;
+            border-radius: 12px;
+            padding: 18px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+            transition: 0.25s ease;
+        }
+        
+        .contact-item:hover {
+            background: #eaf8fd;
+            border-color: #1686b5;
+            transform: translateY(-4px);
+        }
+        
+        .contact-icon {
+            font-size: 24px;
+        }
+        
+        .contact-label {
+            color: #12324a;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .contact-value {
+            color: #1686b5;
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+        /* Mobile Responsive */
+        
+        @media (max-width: 700px) {
+            .creator-contact-grid {
+                grid-template-columns: 1fr;
+                max-width: 420px;
+            }
+            .creator-card {
+                padding: 28px 20px;
+            }
+            .contact-section {
+                padding: 28px 18px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .contact-list {
+                grid-template-columns: 1fr;
+            }
+            .team-section__title {
+                font-size: 26px;
+            }
+            .team-section {
+                padding: 40px 16px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <!-- ===== HEADER ===== -->
-  <header class="header">
-    <div class="header-inner">
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-inner">
 
-      <!-- Logo Image -->
-      <a class="brand" href="#" aria-label="ECEVault Home">
-        <img src="logo.png" alt="ECEVault Logo" class="brand-logo" id="brandLogo" />
-      </a>
+            <!-- Logo Image -->
+            <a class="brand" href="#" aria-label="ECEVault Home">
+                <img src="logo.png" alt="ECEVault Logo" class="brand-logo" id="brandLogo" />
+            </a>
 
-      <div class="header-right">
+            <div class="header-right">
 
-        <!-- Dark / Light Toggle -->
-        <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+                <!-- Dark / Light Toggle -->
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
           🌙
         </button>
 
-        <!-- Admin Badge -->
-        <div class="admin-badge" id="adminBadge">
-          <span class="dot"></span>
-          ADMIN
-        </div>
+                <!-- Admin Badge -->
+                <div class="admin-badge" id="adminBadge">
+                    <span class="dot"></span> ADMIN
+                </div>
 
-        <!-- Logout -->
-        <button class="admin-logout-btn" onclick="logoutAdmin()" id="logoutBtn">
+                <!-- Logout -->
+                <button class="admin-logout-btn" onclick="logoutAdmin()" id="logoutBtn">
           🔓 Logout
         </button>
 
-        <!-- Admin Login -->
-        <button class="admin-login-btn" onclick="openModal('pwModal')" id="loginBtn">
+                <!-- Admin Login -->
+                <button class="admin-login-btn" onclick="openModal('pwModal')" id="loginBtn">
           🔒 Admin
         </button>
 
-      </div>
-    </div>
-  </header>
+            </div>
+        </div>
+    </header>
 
-  <!-- ===== MAIN ===== -->
-  <main class="main-container">
-    <div class="year-tabs-wrapper">
-      <div class="tabs-nav" id="yearTabsNav"></div>
-    </div>
-    <div id="yearPanels"></div>
-  </main>
+    <!-- ===== MAIN ===== -->
+    <main class="main-container">
+        <div class="year-tabs-wrapper">
+            <div class="tabs-nav" id="yearTabsNav"></div>
+        </div>
+        <div id="yearPanels"></div>
+    </main>
 
-  <!-- ===== UPLOAD FAB ===== -->
-  <button class="upload-fab" onclick="openUploadModal()" id="uploadFab">
+    <!-- ===== UPLOAD FAB ===== -->
+    <button class="upload-fab" onclick="openUploadModal()" id="uploadFab">
     ＋ Upload Files
   </button>
 
-  <!-- ===== PASSWORD MODAL ===== -->
-  <div class="modal-overlay" id="pwModal">
-    <div class="modal pw-modal" role="dialog" aria-labelledby="pwTitle" aria-modal="true">
-      <div class="modal-body" style="padding:2rem;">
-        <div class="pw-icon-wrapper">🔐</div>
-        <h2 class="pw-heading" id="pwTitle">Admin Access</h2>
-        <p class="pw-subheading">Enter your password to unlock admin controls</p>
+    <!-- ===== PASSWORD MODAL ===== -->
+    <div class="modal-overlay" id="pwModal">
+        <div class="modal pw-modal" role="dialog" aria-labelledby="pwTitle" aria-modal="true">
+            <div class="modal-body" style="padding:2rem;">
+                <div class="pw-icon-wrapper">🔐</div>
+                <h2 class="pw-heading" id="pwTitle">Admin Access</h2>
+                <p class="pw-subheading">Enter your password to unlock admin controls</p>
 
-        <div class="pw-input-wrapper" id="pwInputWrapper">
-          <input
-            type="password" id="pwInput" class="pw-input"
-            placeholder="Enter password"
-            onkeydown="if(event.key==='Enter') submitPassword()"
-            autocomplete="current-password"
-          />
-          <button class="pw-toggle" onclick="togglePwVisibility()" id="pwToggle" type="button" aria-label="Toggle password visibility">👁</button>
-        </div>
-        <div class="pw-error" id="pwError">❌ Incorrect password. Please try again.</div>
+                <div class="pw-input-wrapper" id="pwInputWrapper">
+                    <input type="password" id="pwInput" class="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter') submitPassword()" autocomplete="current-password" />
+                    <button class="pw-toggle" onclick="togglePwVisibility()" id="pwToggle" type="button" aria-label="Toggle password visibility">👁</button>
+                </div>
+                <div class="pw-error" id="pwError">❌ Incorrect password. Please try again.</div>
 
-        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:10px;">
-          <button class="btn btn-primary btn-full" onclick="submitPassword()">🔓 Unlock Admin Mode</button>
-          <button class="btn btn-ghost btn-full" onclick="closeModal('pwModal')">Cancel</button>
+                <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:10px;">
+                    <button class="btn btn-primary btn-full" onclick="submitPassword()">🔓 Unlock Admin Mode</button>
+                    <button class="btn btn-ghost btn-full" onclick="closeModal('pwModal')">Cancel</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- ===== ADD SUBJECT MODAL ===== -->
-  <div class="modal-overlay" id="addSubjectModal">
-    <div class="modal" role="dialog" aria-labelledby="addSubjectTitle" aria-modal="true">
-      <div class="modal-header">
-        <div class="modal-title" id="addSubjectTitle"><span>📚</span> Add New Subject</div>
-        <button class="modal-close" onclick="closeModal('addSubjectModal')" aria-label="Close">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label" for="addSubjectInput">Subject Name</label>
-          <input type="text" id="addSubjectInput" class="form-input"
-            placeholder="e.g. Digital Signal Processing"
-            onkeydown="if(event.key==='Enter') submitAddSubject()"
-            autocomplete="off" />
+    <!-- ===== ADD SUBJECT MODAL ===== -->
+    <div class="modal-overlay" id="addSubjectModal">
+        <div class="modal" role="dialog" aria-labelledby="addSubjectTitle" aria-modal="true">
+            <div class="modal-header">
+                <div class="modal-title" id="addSubjectTitle"><span>📚</span> Add New Subject</div>
+                <button class="modal-close" onclick="closeModal('addSubjectModal')" aria-label="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="addSubjectInput">Subject Name</label>
+                    <input type="text" id="addSubjectInput" class="form-input" placeholder="e.g. Digital Signal Processing" onkeydown="if(event.key==='Enter') submitAddSubject()" autocomplete="off" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('addSubjectModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="submitAddSubject()">✓ Add Subject</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-ghost" onclick="closeModal('addSubjectModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitAddSubject()">✓ Add Subject</button>
-      </div>
     </div>
-  </div>
 
-  <!-- ===== UPLOAD MODAL ===== -->
-  <div class="modal-overlay" id="uploadModal">
-    <div class="modal" role="dialog" aria-labelledby="uploadModalTitle" aria-modal="true">
-      <div class="modal-header">
-        <div class="modal-title" id="uploadModalTitle"><span>⬆</span> Upload Files</div>
-        <button class="modal-close" onclick="closeModal('uploadModal')" aria-label="Close">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label" for="uploadSubjectSelect">Subject</label>
-          <select id="uploadSubjectSelect" class="form-select"></select>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="uploadCategorySelect">File Type / Category</label>
-          <select id="uploadCategorySelect" class="form-select">
+    <!-- ===== UPLOAD MODAL ===== -->
+    <div class="modal-overlay" id="uploadModal">
+        <div class="modal" role="dialog" aria-labelledby="uploadModalTitle" aria-modal="true">
+            <div class="modal-header">
+                <div class="modal-title" id="uploadModalTitle"><span>⬆</span> Upload Files</div>
+                <button class="modal-close" onclick="closeModal('uploadModal')" aria-label="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="uploadSubjectSelect">Subject</label>
+                    <select id="uploadSubjectSelect" class="form-select"></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="uploadCategorySelect">File Type / Category</label>
+                    <select id="uploadCategorySelect" class="form-select">
             <option value="Assignment">📝 Assignment</option>
             <option value="Manual">📗 Manual</option>
             <option value="Self Learning">🧠 Self Learning</option>
@@ -132,51 +327,155 @@
             <option value="Project">🚀 Project</option>
             <option value="Other">📦 Other</option>
           </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="uploadDesc">Description (Optional)</label>
+                    <input type="text" id="uploadDesc" class="form-input" placeholder="e.g. Mid-sem 2024, Unit 3 Notes..." autocomplete="off" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Select Files</label>
+                    <div class="file-dropzone" id="fileDropzone">
+                        <input type="file" id="fileInput" multiple accept="*/*" onchange="handleFilesDrop(this)" />
+                        <div class="dropzone-icon">📂</div>
+                        <div class="dropzone-text"><strong>Click to browse</strong> or drag & drop files here</div>
+                        <div class="dropzone-hint">PDF, Images, Word, Excel, PPT and all other formats supported</div>
+                    </div>
+                    <div class="selected-files" id="selectedFilesList"></div>
+                </div>
+                <div class="upload-progress" id="uploadProgress">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar-fill" id="uploadProgressBar"></div>
+                    </div>
+                    <div class="progress-text" id="uploadProgressText">Preparing...</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeModal('uploadModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="submitUpload()" id="uploadSubmitBtn">⬆ Upload Files</button>
+            </div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="uploadDesc">Description (Optional)</label>
-          <input type="text" id="uploadDesc" class="form-input" placeholder="e.g. Mid-sem 2024, Unit 3 Notes..." autocomplete="off" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Select Files</label>
-          <div class="file-dropzone" id="fileDropzone">
-            <input type="file" id="fileInput" multiple accept="*/*" onchange="handleFilesDrop(this)" />
-            <div class="dropzone-icon">📂</div>
-            <div class="dropzone-text"><strong>Click to browse</strong> or drag & drop files here</div>
-            <div class="dropzone-hint">PDF, Images, Word, Excel, PPT and all other formats supported</div>
-          </div>
-          <div class="selected-files" id="selectedFilesList"></div>
-        </div>
-        <div class="upload-progress" id="uploadProgress">
-          <div class="progress-bar-wrapper">
-            <div class="progress-bar-fill" id="uploadProgressBar"></div>
-          </div>
-          <div class="progress-text" id="uploadProgressText">Preparing...</div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-ghost" onclick="closeModal('uploadModal')">Cancel</button>
-        <button class="btn btn-primary" onclick="submitUpload()" id="uploadSubmitBtn">⬆ Upload Files</button>
-      </div>
     </div>
-  </div>
 
-  <!-- ===== CONFIRM DIALOG ===== -->
-  <div class="confirm-overlay" id="confirmOverlay">
-    <div class="confirm-box">
-      <div class="confirm-icon">⚠️</div>
-      <div class="confirm-title" id="confirmTitle">Are you sure?</div>
-      <div class="confirm-msg" id="confirmMsg">This action cannot be undone.</div>
-      <div class="confirm-actions">
-        <button class="btn btn-ghost" id="confirmNo">Cancel</button>
-        <button class="btn btn-danger" id="confirmYes">Delete</button>
-      </div>
+    <!-- ===== CONFIRM DIALOG ===== -->
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-box">
+            <div class="confirm-icon">⚠️</div>
+            <div class="confirm-title" id="confirmTitle">Are you sure?</div>
+            <div class="confirm-msg" id="confirmMsg">This action cannot be undone.</div>
+            <div class="confirm-actions">
+                <button class="btn btn-ghost" id="confirmNo">Cancel</button>
+                <button class="btn btn-danger" id="confirmYes">Delete</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- ===== TOAST ===== -->
-  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+    <!-- ===== TOAST ===== -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
-  <script src="app.js"></script>
+    <script src="app.js"></script>
+    <section class="team-section">
+
+        <div class="team-section__content">
+
+            <div class="team-section__eyebrow">
+                The Mind Behind ECEVault
+            </div>
+
+            <p class="team-section__intro">
+                ECEVault is independently conceptualized, designed, and developed with a vision to make academic resources easily accessible, well-organized, and available in one centralized platform for Electronics and Computer Engineering students.
+            </p>
+
+            <!-- Creator and Contact Boxes -->
+
+            <div class="creator-contact-grid">
+
+                <!-- Creator Card -->
+
+                <article class="creator-card">
+
+                    <div class="creator-avatar">
+                        DN
+                    </div>
+
+                    <h3>Deevesh Nemade</h3>
+
+                    <p class="creator-role">
+                        Founder & Full-Stack Developer
+                    </p>
+
+                </article>
+
+                <!-- Contact Section -->
+
+                <div class="contact-section" id="contact">
+
+                    <h3 class="contact-section__title">
+                        Get In Touch
+                    </h3>
+
+                    <p class="contact-section__intro">
+                        Have questions, suggestions, or feedback? Feel free to connect with me.
+                    </p>
+
+                    <div class="contact-list">
+
+                        <!-- Phone -->
+
+                        <a class="contact-item" href="tel:+917972502872">
+
+                            <span class="contact-icon">📞</span>
+
+                            <span class="contact-label">
+                                Phone
+                            </span>
+
+                            <span class="contact-value">
+                                +91 7972502872
+                            </span>
+
+                        </a>
+
+                        <!-- Email -->
+
+                        <a class="contact-item" href="mailto:deeveshnemade2007@gmail.com">
+
+                            <span class="contact-icon">✉️</span>
+
+                            <span class="contact-label">
+                                Email
+                            </span>
+
+                            <span class="contact-value">
+                                Send an Email
+                            </span>
+
+                        </a>
+
+                        <!-- LinkedIn -->
+
+                        <a class="contact-item" href="https://www.linkedin.com/in/deeveshnemade2007" target="_blank" rel="noopener noreferrer">
+
+                            <span class="contact-icon">🔗</span>
+
+                            <span class="contact-label">
+                                LinkedIn
+                            </span>
+
+                            <span class="contact-value">
+                                Connect with Me
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 </body>
+
 </html>
