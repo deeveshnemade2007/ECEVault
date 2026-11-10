@@ -1671,3 +1671,32 @@ body.admin-mode .upload-fab {
         height: 42px;
     }
 }
+
+
+/* =========================
+   ABOUT NAVIGATION BUTTON
+========================= */
+
+.about-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: .82rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    transition: all .25s ease;
+}
+
+.about-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+}

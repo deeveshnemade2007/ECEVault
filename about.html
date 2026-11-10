@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | ECEVault</title>
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+         :root {
+            --bg: #f0f4f8;
+            --card: #ffffff;
+            --text: #0d1526;
+            --muted: #3a5070;
+            --border: rgba(0, 119, 255, .15);
+            --accent: #0077ff;
+            --item: #f4f8fc;
+        }
+        
+        [data-theme="dark"] {
+            --bg: #060b18;
+            --card: #0d1526;
+            --text: #f0f6ff;
+            --muted: #8ba4c8;
+            --border: rgba(0, 212, 255, .15);
+            --accent: #00d4ff;
+            --item: #111d31;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: .3s;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            width: 150px;
+            max-height: 55px;
+            object-fit: contain;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        button,
+        .back-btn {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            background: var(--item);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        button:hover,
+        .back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .container {
+            max-width: 1050px;
+            margin: auto;
+            padding: 65px 20px;
+        }
+        
+        .eyebrow {
+            text-align: center;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 38px;
+            margin: 12px 0;
+        }
+        
+        .intro {
+            max-width: 750px;
+            margin: 0 auto 45px;
+            text-align: center;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: .8fr 1.2fr;
+            gap: 25px;
+        }
+        
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 32px 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .12);
+        }
+        
+        .creator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #0077ff, #00d4ff);
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        h2,
+        h3 {
+            margin-top: 0;
+        }
+        
+        h3 {
+            margin-bottom: 8px;
+            font-size: 22px;
+        }
+        
+        .role {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .contact-intro {
+            color: var(--muted);
+            text-align: center;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        
+        .contact-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        .contact-item {
+            background: var(--item);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 9px;
+            transition: .25s;
+            min-width: 0;
+        }
+        
+        .contact-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+        
+        .contact-icon {
+            font-size: 25px;
+        }
+        
+        .contact-label {
+            color: var(--text);
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .contact-value {
+            color: var(--accent);
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+        
+        footer {
+            text-align: center;
+            color: var(--muted);
+            padding: 25px;
+            font-size: 13px;
+        }
+        
+        @media(max-width:700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-list {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 29px;
+            }
+            .container {
+                padding: 40px 16px;
+            }
+            .logo {
+                width: 110px;
+            }
+            header {
+                padding: 12px 4%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html">
+            <img src="logo.png" alt="ECEVault Logo" class="logo">
+        </a>
+
+        <div class="header-actions">
+            <button onclick="toggleTheme()" id="themeToggle" aria-label="Toggle theme">☀️</button>
+
+            <a href="index.html" class="back-btn">← Back</a>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <div class="eyebrow">Every Resource. One Place.</div>
+
+        <h1>About ECEVault</h1>
+
+        <p class="intro">
+            ECEVault is a centralized academic resource platform designed to make learning resources easily accessible and organized for Electronics and Computer Engineering students. It brings assignments, manuals, question papers, projects and other learning materials
+            together in one convenient place.
+        </p>
+
+        <section class="grid">
+
+            <div class="card creator">
+                <div class="avatar">DN</div>
+
+                <h3>Deevesh Nemade</h3>
+
+                <p class="role">
+                    Founder & Full-Stack Developer
+                </p>
+            </div>
+
+            <div class="card">
+
+                <h2 style="text-align:center;">Get In Touch</h2>
+
+                <p class="contact-intro">
+                    Have questions, suggestions or feedback? Feel free to connect.
+                </p>
+
+                <div class="contact-list">
+
+                    <a class="contact-item" href="mailto:deeveshnemade2007@gmail.com">
+                        <span class="contact-icon">✉️</span>
+                        <span class="contact-label">Email</span>
+                        <span class="contact-value">Send an Email</span>
+                    </a>
+
+                    <a class="contact-item" href="https://www.linkedin.com/in/deeveshnemade2007" target="_blank" rel="noopener noreferrer">
+                        <span class="contact-icon">🔗</span>
+                        <span class="contact-label">LinkedIn</span>
+                        <span class="contact-value">Connect with Me</span>
+                    </a>
+
+                    <a class="contact-item" href="https://github.com/deeveshnemade2007" target="_blank" rel="noopener noreferrer">
+                        <span class="contact-icon">💻</span>
+                        <span class="contact-label">GitHub</span>
+                        <span class="contact-value">View Projects</span>
+                    </a>
+
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        © 2026 ECEVault. Every Resource. One Place.
+    </footer>
+
+    <script>
+        const THEME_KEY = 'ecevault_theme';
+
+        function applyAboutTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+
+            localStorage.setItem(THEME_KEY, theme);
+
+            document.getElementById('themeToggle').textContent =
+                theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function toggleTheme() {
+            const current =
+                document.documentElement.getAttribute('data-theme') || 'dark';
+
+            applyAboutTheme(current === 'dark' ? 'light' : 'dark');
+        }
+
+        const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+        applyAboutTheme(savedTheme);
+    </script>
+
+</body>
+
+</html>
