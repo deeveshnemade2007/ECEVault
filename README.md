@@ -247,6 +247,12 @@ Choose and add an appropriate open-source license before distributing the projec
 
 ---
 
-**ECEVault — Every Resource. One Place.**
+## Developer
 
-Making academic resources easier to organize, access, and share.
+**Deevesh Nemade**
+
+Electronics and Computer Engineering Student
+
+---
+
+**ECEVault — Every Resource. One Place.**
