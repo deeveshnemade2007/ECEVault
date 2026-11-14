@@ -1,0 +1,25 @@
+{
+    "id": "/",
+    "name": "ECEVault – Every Resource. One Place.",
+    "short_name": "ECEVault",
+    "description": "Your complete ECE academic resource platform.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#ffffff",
+    "theme_color": "#111827",
+    "icons": [{
+            "src": "/icons/ecevault-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/icons/ecevault-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ]
+}

@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="theme-color" content="#111827">
+    <link rel="manifest" href="/manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ECEVault — Every Resource. One Place.</title>
     <meta name="description" content="ECEVault is your one-stop hub for ECE study materials — assignments, manuals, question papers, and more. Organized by semester and subject." />
@@ -176,6 +178,16 @@
     <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
     <script src="app.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(() => console.log('ECEVault Service Worker Registered'))
+                    .catch(error => console.error('Service Worker Error:', error));
+            });
+        }
+    </script>
 
 </body>
 
